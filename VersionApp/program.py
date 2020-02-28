@@ -3,8 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import platform
 import time
-import tkinter
 from tkinter import *
+
 
 # starts tkinter
 root = Tk()
@@ -14,8 +14,16 @@ root.title("AppToDate")
 user_email = Entry(root, width=25)
 user_email.grid(row=3, column=0)
 
+
+# this piece of code runs selenium without opening chrome view
+options = webdriver.ChromeOptions()
+options.add_argument("headless")
+options.add_argument("window-size=1920x1080")
+options.add_argument("disable-gpu")
+
+
 # this runs google chrome webdriver, REPLACE WITH YOUR OWN WEB DRIVER PATH
-driver = webdriver.Chrome("/Users/tamerjar/Desktop/chromedriver")
+driver = webdriver.Chrome("/Users/tamerjar/Desktop/chromedriver", options=options)
 driver.get("https://www.python.org/downloads/")
 
 time.sleep(3)
