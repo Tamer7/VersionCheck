@@ -7,6 +7,7 @@ from tkinter import *
 from database import *
 import smtplib
 from email.mime.text import MIMEText
+from emailPass import Safe
 
 
 # starts tkinter
@@ -112,11 +113,11 @@ def emailGet():
 
 # this is the email functionality to send email using smtp
 def email(email, email_string):
-    smtp_ssl_host = "smtp.gmail.com"  # smtp.mail.yahoo.com
+    smtp_ssl_host = "smtp.gmail.com"
     smtp_ssl_port = 465
-    username = "deportationsquadvum@gmail.com"
-    password = "Deport12345"
-    sender = "ME@EXAMPLE.COM"
+    username = Safe.username
+    password = Safe.password
+    sender = "TEAMDSQUAD"
     targets = [email]
 
     msg = MIMEText(email_string)
@@ -130,72 +131,81 @@ def email(email, email_string):
     server.quit()
 
 
-# ------- THIS CODE DISPLAYS VERSION UPON RUNNING THE APP
-if python_latest_version == finalVersion:
-    frame = LabelFrame(root, padx=15, pady=15)
-    frame.grid(row=5, column=5)
-    pythonFrame = Label(
-        frame, text="You have the Latest Python Version : " + finalVersion
-    )
-    pythonFrame.grid(row=0, column=0)
-else:
-    frame = LabelFrame(root, padx=15, pady=15)
-    frame.grid(row=5, column=5)
-    python_new_version = Label(
-        frame,
-        text="A New Python version : "
-        + python_latest_version
-        + " is Available for Update",
-    )
-    python_new_version.grid(row=0, column=0)
-    # calls the get email function
-    emailGet()
-    # this method sends email with a message
-    email(str(get_records), "A new Version for Python is Available")
+def checkVersion():
+    # ------- THIS CODE DISPLAYS VERSION UPON RUNNING THE APP
+    if python_latest_version == finalVersion:
+        frame = LabelFrame(root, padx=15, pady=15)
+        frame.grid(row=5, column=5)
+        pythonFrame = Label(
+            frame, text="You have the Latest Python Version : " + finalVersion
+        )
+        pythonFrame.grid(row=0, column=0)
+    else:
+        frame = LabelFrame(root, padx=15, pady=15)
+        frame.grid(row=5, column=5)
+        python_new_version = Label(
+            frame,
+            text="A New Python version : "
+            + python_latest_version
+            + " is Available for Update",
+        )
+        python_new_version.grid(row=0, column=0)
+        # calls the get email function
+        emailGet()
+        # this method sends email with a message
+        email(str(get_records), "A new Version for Python is Available")
+
+    if chrome_new == final_chrome:
+        frame = LabelFrame(root, padx=15, pady=15)
+        frame.grid(row=6, column=5)
+        chromeFrame = Label(
+            frame, text="You have the Latest Chrome Version : " + chrome_new
+        )
+        chromeFrame.grid(row=0, column=0)
+    else:
+        frame = LabelFrame(root, padx=15, pady=15)
+        frame.grid(row=6, column=5)
+        chrome_new_version = Label(
+            frame,
+            text="A New Chrome version : " + final_chrome + " is Available for Update",
+        )
+        chrome_new_version.grid(row=0, column=0)
+        # calls the get email function
+        emailGet()
+        # this method sends email with a message
+        email(str(get_records), "A new Version for Chrome is Available")
+
+    if selenium_computer_version == final_sel:
+        frame = LabelFrame(root, padx=15, pady=15)
+        frame.grid(row=7, column=5)
+        selFrame = Label(
+            frame,
+            text="You have the Latest Selenium Version : " + selenium_computer_version,
+        )
+        selFrame.grid(row=0, column=0)
+    else:
+        frame = LabelFrame(root, padx=15, pady=15)
+        frame.grid(row=7, column=5)
+        sel_new_Frame = Label(
+            frame,
+            text="A New Selenium version : " + final_sel + " is Available for Update",
+        )
+        sel_new_Frame.grid(row=0, column=0)
+        # calls the get email function
+        emailGet()
+        # this method sends email with a message
+        email(str(get_records), "A new Version for Selenium is Available")
+
+    # ------------ ENDS HERE
 
 
-if chrome_new == final_chrome:
-    frame = LabelFrame(root, padx=15, pady=15)
-    frame.grid(row=6, column=5)
-    chromeFrame = Label(
-        frame, text="You have the Latest Chrome Version : " + chrome_new
-    )
-    chromeFrame.grid(row=0, column=0)
-else:
-    frame = LabelFrame(root, padx=15, pady=15)
-    frame.grid(row=6, column=5)
-    chrome_new_version = Label(
-        frame,
-        text="A New Chrome version : " + final_chrome + " is Available for Update",
-    )
-    chrome_new_version.grid(row=0, column=0)
-    # calls the get email function
-    emailGet()
-    # this method sends email with a message
-    email(str(get_records), "A new Version for Chrome is Available")
+# calling the above function to show the data on the window
+checkVersion()
 
 
-if selenium_computer_version == final_sel:
-    frame = LabelFrame(root, padx=15, pady=15)
-    frame.grid(row=7, column=5)
-    selFrame = Label(
-        frame,
-        text="You have the Latest Selenium Version : " + selenium_computer_version,
-    )
-    selFrame.grid(row=0, column=0)
-else:
-    frame = LabelFrame(root, padx=15, pady=15)
-    frame.grid(row=7, column=5)
-    sel_new_Frame = Label(
-        frame, text="A New Selenium version : " + final_sel + " is Available for Update"
-    )
-    sel_new_Frame.grid(row=0, column=0)
-    # calls the get email function
-    emailGet()
-    # this method sends email with a message
-    email(str(get_records), "A new Version for Selenium is Available")
-
-# ------------ ENDS HERE
+# refreshes for any updates
+def refresh():
+    checkVersion()
 
 
 # function to check if new version is available fro python when the button is clicked
@@ -287,6 +297,10 @@ email_button.grid(row=3, column=4)
 test = Button(root, text="showemail", command=emailGet)
 test.grid(row=3, column=5)
 # delete later
+
+# this is a button to refresh the window
+refresh = Button(root, text="Click to Refresh", command=refresh)
+refresh.grid(row=3, column=6)
 
 # button to delete email
 button_delete = Button(root, text="UnSubscribe", command=removeEmail)
