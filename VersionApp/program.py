@@ -5,6 +5,8 @@ import platform
 import time
 from tkinter import *
 from database import *
+import smtplib
+from email.mime.text import MIMEText
 
 
 # starts tkinter
@@ -59,6 +61,7 @@ sel = driver.find_element(By.XPATH, "/html/body/div[3]/table/tbody/tr[3]/td[2]")
 final_sel = sel.text
 print("Latest Selenium Version: " + final_sel)
 
+
 # finds pythons version on system on system
 try:
     pythonVersion = platform.python_version()
@@ -86,6 +89,47 @@ except:
     print("Selenium is not installed on your system")
 
 
+# this gets all emails from the database
+# we will use this code and implement it into the other code once the mail functionality is ready
+def emailGet():
+    # Creates the connection from the database.py
+    conn = sqlite3.connect("email.db")
+    c = conn.cursor()
+
+    c.execute("SELECT *, oid FROM email")
+    records = c.fetchall()
+    print(records)
+    global get_records
+    get_records = ""
+
+    for i in records:
+        get_records += str(i[0]) + "\n"
+        print(get_records)
+
+    conn.commit()
+    conn.close()
+
+
+# this is the email functionality to send email using smtp
+def email(email, email_string):
+    smtp_ssl_host = "smtp.gmail.com"  # smtp.mail.yahoo.com
+    smtp_ssl_port = 465
+    username = "deportationsquadvum@gmail.com"
+    password = "Deport12345"
+    sender = "ME@EXAMPLE.COM"
+    targets = [email]
+
+    msg = MIMEText(email_string)
+    msg["Subject"] = "Version Check Updates"
+    msg["From"] = sender
+    msg["To"] = ", ".join(targets)
+
+    server = smtplib.SMTP_SSL(smtp_ssl_host, smtp_ssl_port)
+    server.login(username, password)
+    server.sendmail(sender, targets, msg.as_string())
+    server.quit()
+
+
 # ------- THIS CODE DISPLAYS VERSION UPON RUNNING THE APP
 if python_latest_version == finalVersion:
     frame = LabelFrame(root, padx=15, pady=15)
@@ -104,6 +148,10 @@ else:
         + " is Available for Update",
     )
     python_new_version.grid(row=0, column=0)
+    # calls the get email function
+    emailGet()
+    # this method sends email with a message
+    email(str(get_records), "A new Version for Python is Available")
 
 
 if chrome_new == final_chrome:
@@ -121,6 +169,10 @@ else:
         text="A New Chrome version : " + final_chrome + " is Available for Update",
     )
     chrome_new_version.grid(row=0, column=0)
+    # calls the get email function
+    emailGet()
+    # this method sends email with a message
+    email(str(get_records), "A new Version for Chrome is Available")
 
 
 if selenium_computer_version == final_sel:
@@ -138,6 +190,10 @@ else:
         frame, text="A New Selenium version : " + final_sel + " is Available for Update"
     )
     sel_new_Frame.grid(row=0, column=0)
+    # calls the get email function
+    emailGet()
+    # this method sends email with a message
+    email(str(get_records), "A new Version for Selenium is Available")
 
 # ------------ ENDS HERE
 
@@ -202,26 +258,6 @@ def submit():
 
     # Clear The Text Boxes
     user_email.delete(0, END)
-
-
-# this gets all emails from the database
-# we will use this code and implement it into the other code once the mail functionality is ready
-def emailGet():
-    # Creates the connection from the database.py
-    conn = sqlite3.connect("email.db")
-    c = conn.cursor()
-
-    c.execute("SELECT *, oid FROM email")
-    records = c.fetchall()
-    print(records)
-    get_records = ""
-
-    for i in records:
-        get_records += str(i[0]) + "\n"
-        print(get_records)
-
-    conn.commit()
-    conn.close()
 
 
 # this currently removes the email from the database when the unsubscribe button is clicked
