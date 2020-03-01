@@ -1,6 +1,5 @@
 import sqlite3
 
-
 # this starts a connection and makes a file called 'email.db'
 conn = sqlite3.connect("email.db")
 c = conn.cursor()

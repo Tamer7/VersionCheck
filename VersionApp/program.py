@@ -15,6 +15,10 @@ root.title("AppToDate")
 user_email = Entry(root, width=25)
 user_email.grid(row=3, column=0)
 
+# input field to delete users email
+email_delete = Entry(root, width=25)
+email_delete.grid(row=4, column=0)
+
 
 # this piece of code runs selenium without opening chrome view
 options = webdriver.ChromeOptions()
@@ -104,14 +108,14 @@ else:
 
 if chrome_new == final_chrome:
     frame = LabelFrame(root, padx=15, pady=15)
-    frame.grid(row=5, column=6)
+    frame.grid(row=6, column=5)
     chromeFrame = Label(
         frame, text="You have the Latest Chrome Version : " + chrome_new
     )
     chromeFrame.grid(row=0, column=0)
 else:
     frame = LabelFrame(root, padx=15, pady=15)
-    frame.grid(row=5, column=6)
+    frame.grid(row=6, column=5)
     chrome_new_version = Label(
         frame,
         text="A New Chrome version : " + final_chrome + " is Available for Update",
@@ -121,7 +125,7 @@ else:
 
 if selenium_computer_version == final_sel:
     frame = LabelFrame(root, padx=15, pady=15)
-    frame.grid(row=5, column=7)
+    frame.grid(row=7, column=5)
     selFrame = Label(
         frame,
         text="You have the Latest Selenium Version : " + selenium_computer_version,
@@ -129,7 +133,7 @@ if selenium_computer_version == final_sel:
     selFrame.grid(row=0, column=0)
 else:
     frame = LabelFrame(root, padx=15, pady=15)
-    frame.grid(row=6, column=7)
+    frame.grid(row=7, column=5)
     sel_new_Frame = Label(
         frame, text="A New Selenium version : " + final_sel + " is Available for Update"
     )
@@ -182,6 +186,7 @@ def getEmail():
     print(email)
 
 
+# this isnserts emails into the database when the subscribe button is clicked
 def submit():
     # Creates the connection from the database.py
     conn = sqlite3.connect("email.db")
@@ -199,6 +204,8 @@ def submit():
     user_email.delete(0, END)
 
 
+# this gets all emails from the database
+# we will use this code and implement it into the other code once the mail functionality is ready
 def emailGet():
     # Creates the connection from the database.py
     conn = sqlite3.connect("email.db")
@@ -210,18 +217,44 @@ def emailGet():
     get_records = ""
 
     for i in records:
-        get_records += str(i[0])
+        get_records += str(i[0]) + "\n"
         print(get_records)
 
     conn.commit()
     conn.close()
 
 
+# this currently removes the email from the database when the unsubscribe button is clicked
+# currently it removes record by id
+def removeEmail():
+    conn = sqlite3.connect("email.db")
+    c = conn.cursor()
+    if c.execute("DELETE from email WHERE oid = " + email_delete.get()):
+        deleted_email = Label(
+            root, text="You have been Unsubscribed from the mailing list"
+        )
+        deleted_email.grid(row=5, column=0)
+    else:
+        print("error")
+
+    email_delete.delete(0, END)
+    conn.commit()
+    conn.close()
+
+
 # button to get email
 
-email_button = Button(root, text="Submit Email", command=emailGet)
+email_button = Button(root, text="Subscribe", command=submit)
 email_button.grid(row=3, column=4)
 
+# this is a test button delete later
+test = Button(root, text="showemail", command=emailGet)
+test.grid(row=3, column=5)
+# delete later
+
+# button to delete email
+button_delete = Button(root, text="UnSubscribe", command=removeEmail)
+button_delete.grid(row=4, column=4)
 
 # button for python
 my_label_python = Button(root, text="Check Version For Python", command=getPython)
