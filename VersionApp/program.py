@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 import platform
 import time
 from tkinter import *
+from database import *
 
 
 # starts tkinter
@@ -181,10 +182,46 @@ def getEmail():
     print(email)
 
 
+def submit():
+    # Creates the connection from the database.py
+    conn = sqlite3.connect("email.db")
+    c = conn.cursor()
+
+    # Insert into the database table
+    c.execute(
+        "INSERT INTO email VALUES (:email_address)", {"email_address": user_email.get()}
+    )
+
+    conn.commit()
+    conn.close()
+
+    # Clear The Text Boxes
+    user_email.delete(0, END)
+
+
+def emailGet():
+    # Creates the connection from the database.py
+    conn = sqlite3.connect("email.db")
+    c = conn.cursor()
+
+    c.execute("SELECT *, oid FROM email")
+    records = c.fetchall()
+    print(records)
+    get_records = ""
+
+    for i in records:
+        get_records += str(i[0])
+        print(get_records)
+
+    conn.commit()
+    conn.close()
+
+
 # button to get email
 
-email_button = Button(root, text="Submit Email", command=getEmail)
+email_button = Button(root, text="Submit Email", command=emailGet)
 email_button.grid(row=3, column=4)
+
 
 # button for python
 my_label_python = Button(root, text="Check Version For Python", command=getPython)
