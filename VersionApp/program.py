@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import platform
 import time
+import tkinter as tk
 from tkinter import *
 from database import *
 import smtplib
@@ -99,13 +100,16 @@ def emailGet():
 
     c.execute("SELECT *, oid FROM email")
     records = c.fetchall()
-    print(records)
+    print("This is all the emails in the database : " + str(records))
     global get_records
+    global new_record
     get_records = ""
 
     for i in records:
-        get_records += str(i[0]) + "\n"
-        print(get_records)
+        get_records += str(i[0] + ",")
+        # print(get_records)
+        new_record = get_records[:-1]
+        print(new_record)
 
     conn.commit()
     conn.close()
@@ -153,7 +157,7 @@ def checkVersion():
         # calls the get email function
         emailGet()
         # this method sends email with a message
-        email(str(get_records), "A new Version for Python is Available")
+        email(str(new_record), "A new Version for Python is Available")
 
     if chrome_new == final_chrome:
         frame = LabelFrame(root, padx=15, pady=15)
@@ -173,7 +177,7 @@ def checkVersion():
         # calls the get email function
         emailGet()
         # this method sends email with a message
-        email(str(get_records), "A new Version for Chrome is Available")
+        email(str(new_record), "A new Version for Chrome is Available")
 
     if selenium_computer_version == final_sel:
         frame = LabelFrame(root, padx=15, pady=15)
@@ -194,7 +198,7 @@ def checkVersion():
         # calls the get email function
         emailGet()
         # this method sends email with a message
-        email(str(get_records), "A new Version for Selenium is Available")
+        email(str(new_record), "A new Version for Selenium is Available")
 
     # ------------ ENDS HERE
 
@@ -241,18 +245,7 @@ def getSelenium():
         new_selenium.grid(row=12, column=0)
 
 
-# gets email and stores it in variable email
-def getEmail():
-    email = user_email.get()
-    if user_email != "":
-        show_message = Label(root, text="Email Submitted")
-        show_message.grid(row=3, column=5)
-    else:
-        print("Empty text field")
-    print(email)
-
-
-# this isnserts emails into the database when the subscribe button is clicked
+# this inserts emails into the database when the subscribe button is clicked
 def submit():
     # Creates the connection from the database.py
     conn = sqlite3.connect("email.db")
@@ -281,7 +274,8 @@ def removeEmail():
         )
         deleted_email.grid(row=5, column=0)
     else:
-        print("error")
+        error_label = Label(root, text="There is no such record")
+        error_label.grid(row=5, column=0)
 
     email_delete.delete(0, END)
     conn.commit()
