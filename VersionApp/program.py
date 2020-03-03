@@ -15,13 +15,27 @@ from emailPass import Safe
 root = Tk()
 root.title("AppToDate")
 
+# greeting
+greeting = Label(root, text="Credential Section")
+greeting.grid(row=2, column=0)
+greeting.config(font=("Courier", 20, "bold"))
+
+# label enter your email
+label_text = Label(root, text="Enter your email here : ")
+label_text.grid(row=3, column=0)
+
+# label unsubscribe from the email list
+label_text_uns = Label(root, text="Unsubscribe by typing in your email : ")
+label_text_uns.grid(row=4, column=0)
+
+
 # input field to get users email
 user_email = Entry(root, width=25)
-user_email.grid(row=3, column=0)
+user_email.grid(row=3, column=1)
 
 # input field to delete users email
 email_delete = Entry(root, width=25)
-email_delete.grid(row=4, column=0)
+email_delete.grid(row=4, column=1)
 
 
 # this piece of code runs selenium without opening chrome view
@@ -252,9 +266,15 @@ def submit():
     c = conn.cursor()
 
     # Insert into the database table
-    c.execute(
+    if c.execute(
         "INSERT INTO email VALUES (:email_address)", {"email_address": user_email.get()}
-    )
+    ):
+        inserted_email = Label(root, text="Email has been submitted")
+        inserted_email.grid(row=2, column=1)
+
+    else:
+        error = Label(root, text="Error entering email")
+        error.grid(row=2, column=1)
 
     conn.commit()
     conn.close()
@@ -264,11 +284,11 @@ def submit():
 
 
 # this currently removes the email from the database when the unsubscribe button is clicked
-# currently it removes record by id
+# it takes the inout from the user, and if it matches the data from the database it deletes
 def removeEmail():
     conn = sqlite3.connect("email.db")
     c = conn.cursor()
-    if c.execute("DELETE from email WHERE oid = " + email_delete.get()):
+    if c.execute("DELETE from email WHERE email_address=?", (email_delete.get(),)):
         deleted_email = Label(
             root, text="You have been Unsubscribed from the mailing list"
         )
