@@ -328,7 +328,7 @@ my_label_python.grid(row=7, column=0)
 my_label_chrome = Button(root, text="Check Version for Chrome", command=getChrome)
 my_label_chrome.grid(row=9, column=0)
 
-# button for seleniun
+# button for selenium
 
 my_selenium_button = Button(
     root, text="Check Version for Selenium", command=getSelenium
