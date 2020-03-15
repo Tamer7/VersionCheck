@@ -9,6 +9,8 @@ from database import *
 import smtplib
 from email.mime.text import MIMEText
 from emailPass import Safe
+from datetime import date
+import datetime
 
 
 # starts tkinter
@@ -221,6 +223,24 @@ def checkVersion():
 checkVersion()
 
 
+def checkRecordDb():
+    global email_check
+    conn = sqlite3.connect("email.db")
+    c = conn.cursor()
+    c.execute("SELECT * FROM email")
+    rows = c.fetchall()
+    email_check = ""
+
+    for row in rows:
+        email_check += str(row[0] + ",")
+        print(email_check)
+
+    conn.commit()
+    conn.close()
+
+
+checkRecordDb()
+
 # refreshes for any updates
 def refresh():
     checkVersion()
@@ -269,6 +289,8 @@ def submit():
     if c.execute(
         "INSERT INTO email VALUES (:email_address)", {"email_address": user_email.get()}
     ):
+        global input_date
+        input_date = date.today()
         inserted_email = Label(root, text="Email has been submitted")
         inserted_email.grid(row=2, column=1)
 
@@ -278,6 +300,7 @@ def submit():
 
     conn.commit()
     conn.close()
+    refresh()
 
     # Clear The Text Boxes
     user_email.delete(0, END)
@@ -300,6 +323,23 @@ def removeEmail():
     email_delete.delete(0, END)
     conn.commit()
     conn.close()
+
+
+# funtion to delete email after 6 months
+def delete_email_sixmonths():
+    date_exceed = input_date + datetime.timedelta(6 * 365 / 12)
+    print(date_exceed)
+
+    if date.today() >= date_exceed:
+        c.execute("DELETE * from email")
+    else:
+        print("Email still Valid")
+
+    conn.commit()
+    conn.close()
+
+
+delete_email_sixmonths()
 
 
 # button to get email
