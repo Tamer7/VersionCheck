@@ -236,12 +236,22 @@ class FindVersion:
         self.validator = Validator(self.user_email.get())
         self.valid = self.validator.check_for_symbol()
 
-        if self.user_email.get() == "" or self.valid == False:
-            error = Label(root, text="Empty Field / Invalid email")
+        if (
+            self.user_email.get() == ""
+            or self.valid == False
+            or self.check_email_exsistence() == True
+        ):
+            error = Label(
+                root, text="Empty Field / Invalid email / Email Already Exists"
+            )
             error.grid(row=1, column=1)
             error.config(fg="red")
             error.after(3000, error.destroy)
         else:
+            inserted_email = Label(root, text="Email has been submitted")
+            inserted_email.grid(row=1, column=1)
+            inserted_email.after(7000, inserted_email.destroy)
+
             # Creates the connection from the database.py
             conn = sqlite3.connect("email.db")
             c = conn.cursor()
@@ -251,19 +261,15 @@ class FindVersion:
                 {"email_address": self.user_email.get()},
             )
 
-            inserted_email = Label(root, text="Email has been submitted")
-            inserted_email.grid(row=1, column=1)
-            inserted_email.after(3000, inserted_email.destroy)
-
             # checks for input date of emails & if greater than
             # 6 months it gets deleted
             self.date_today = date.today()
             print("Today's date : " + str(self.date_today))
             self.__delete_email_sixmonths()
 
-            self.refresh()
             conn.commit()
             conn.close()
+            self.refresh()
 
         # Clear The Text Boxes
         self.user_email.delete(0, END)
@@ -274,7 +280,11 @@ class FindVersion:
         self.deleteRecord = Validator(self.email_delete.get())
         self.delete = self.deleteRecord.check_for_symbol()
 
-        if self.email_delete.get() == "" or self.delete == False:
+        if (
+            self.email_delete.get() == ""
+            or self.delete == False
+            or self.check_delete_existence() == False
+        ):
             error_label = Label(root, text="Invalid Syntax / No record available")
             error_label.grid(row=5, column=1)
             error_label.config(fg="red")
@@ -311,7 +321,6 @@ class FindVersion:
         conn.commit()
         conn.close()
 
-    # (for testing purposes only)
     def emailGet(self):
         # Creates the connection from the database.py
         conn = sqlite3.connect("email.db")
@@ -364,6 +373,63 @@ class FindVersion:
             conn.close()
         else:
             print("Email still Valid")
+
+    def check_email_exsistence(self):
+        """
+        This function ensures that no duplicate data/email is stored in the database
+        It gets the input and checks if it exists in the database, if True meaning it already exist
+        else if false meaning it doesnt exist
+        """
+
+        self.email_exists = False
+        conn = sqlite3.connect("email.db")
+        c = conn.cursor()
+        c.execute(
+            "SELECT * FROM email WHERE email_address = :email_address",
+            {"email_address": self.user_email.get()},
+        )
+
+        # Previous line selects a row of your database only if the column that contains
+        # the email adress in said row has the same adress as the one from the entry
+
+        if (
+            c.fetchone()
+        ):  # which is the same as saying "if c.fetchone retrieved something in it"
+            self.email_exists = True
+
+        else:
+            self.email_exists = False
+
+        conn.commit()
+        conn.close()
+
+        return self.email_exists
+
+    def check_delete_existence(self):
+
+        """
+        This function checks if the input from the unsubscribe matches the data in the database
+        If it does, it return a false and the data can be deleted
+        """
+
+        self.delete_exist = False
+
+        conn = sqlite3.connect("email.db")
+        c = conn.cursor()
+        c.execute(
+            "SELECT * FROM email WHERE email_address = :email_address",
+            {"email_address": self.email_delete.get()},
+        )
+
+        if c.fetchone():
+            self.delete_exist = True
+        else:
+            self.delete_exist = False
+
+        conn.commit()
+        conn.close()
+
+        return self.delete_exist
 
 
 root = Tk()
