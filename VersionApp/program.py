@@ -16,31 +16,45 @@ import datetime
 class FindVersion:
     def __init__(self, master):
         master.title("AppToDate")
-        frame = Frame(master)
-        frame.grid(row=5, column=5)
+        # frame = Frame(master)
+        # frame.grid(row=5, column=5)
 
-        label_text = Label(master, text="Enter your email here : ")
-        label_text.grid(row=1, column=0)
+        self.credentials = Label(
+            master, text="CREDENTIAL SECTION", font="Helvetica 22 bold"
+        )
+        self.credentials.grid(row=1, column=0)
+
+        self.label_text = Label(
+            master, text="Enter your email here:", font="Helvetica 18"
+        )
+        self.label_text.grid(row=3, column=0)
 
         # label unsubscribe from the email list
-        label_text_uns = Label(master, text="Unsubscribe by typing in your email : ")
-        label_text_uns.grid(row=2, column=0)
+        self.label_text_uns = Label(
+            master, text="Unsubscribe by typing in your email:", font="Helvetica 18"
+        )
+        self.label_text_uns.grid(row=4, column=0)
 
-        self.user_email = Entry(root, width=25)
-        self.user_email.grid(row=1, column=1)
+        # input field to insert email
+        self.user_email = Entry(master, width=30)
+        self.user_email.grid(row=3, column=1)
 
         # input field to delete users email
-        self.email_delete = Entry(root, width=25)
-        self.email_delete.grid(row=2, column=1)
+        self.email_delete = Entry(master, width=30)
+        self.email_delete.grid(row=4, column=1)
 
         # button to get email
 
-        email_button = Button(root, text="Subscribe", command=self.submit)
-        email_button.grid(row=1, column=2)
+        self.email_button = Button(
+            master, text="Subscribe", command=self.submit, relief=RAISED
+        )
+        self.email_button.grid(row=3, column=2)
 
         # button to delete email
-        button_delete = Button(root, text="UnSubscribe", command=self.removeEmail)
-        button_delete.grid(row=2, column=2)
+        self.button_delete = Button(
+            master, text="UnSubscribe", command=self.removeEmail, relief=RAISED
+        )
+        self.button_delete.grid(row=4, column=2)
 
         # this piece of code runs selenium without opening chrome view
         self.options = webdriver.ChromeOptions()
@@ -117,13 +131,13 @@ class FindVersion:
             pythonFrame = Label(
                 master, text="You have the Latest Python Version : " + self.finalVersion
             )
-            pythonFrame.grid(row=0, column=0)
+            pythonFrame.grid(row=6, column=0)
         else:
-            frame = LabelFrame(root, padx=15, pady=15)
-            frame.grid(row=5, column=2)
+            frame = LabelFrame(root, padx=25, pady=25, width=25, relief="solid")
+            frame.grid(row=6, column=0)
             self.python_new_version = Label(
                 frame,
-                text="A New Python version : "
+                text="PYTHON VERSION: "
                 + self.python_latest_version
                 + " is Available for Update",
             )
@@ -134,18 +148,18 @@ class FindVersion:
             self.email(str(new_record), "A new Version for Python is Available")
 
         if self.chrome_new == self.final_chrome:
-            frame = LabelFrame(master, padx=15, pady=15)
-            frame.grid(row=6, column=2)
+            frame = LabelFrame(master, padx=15, pady=15, width=25, relief="solid")
+            frame.grid(row=7, column=0)
             self.chromeFrame = Label(
                 frame, text="You have the Latest Chrome Version : " + self.chrome_new
             )
             self.chromeFrame.grid(row=0, column=0)
         else:
-            frame = LabelFrame(master, padx=15, pady=15)
-            frame.grid(row=6, column=2)
+            frame = LabelFrame(master, padx=15, pady=15, width=25, relief="solid")
+            frame.grid(row=7, column=0)
             self.chrome_new_version = Label(
                 frame,
-                text="A New Chrome version : "
+                text="CHROME VERSION: "
                 + self.final_chrome
                 + " is Available for Update",
             )
@@ -156,8 +170,8 @@ class FindVersion:
             self.email(str(new_record), "A new Version for Chrome is Available")
 
         if self.selenium_computer_version == self.final_sel:
-            frame = LabelFrame(master, padx=15, pady=15)
-            frame.grid(row=7, column=2)
+            frame = LabelFrame(master, padx=15, pady=15, width=25, relief="solid")
+            frame.grid(row=8, column=0)
             self.selFrame = Label(
                 frame,
                 text="You have the Latest Selenium Version : "
@@ -165,13 +179,11 @@ class FindVersion:
             )
             self.selFrame.grid(row=0, column=0)
         else:
-            frame = LabelFrame(master, padx=15, pady=15)
-            frame.grid(row=7, column=2)
+            frame = LabelFrame(master, padx=15, pady=15, width=25, relief="solid")
+            frame.grid(row=8, column=0)
             self.sel_new_Frame = Label(
                 frame,
-                text="A New Selenium version : "
-                + self.final_sel
-                + " is Available for Update",
+                text="SELENIUM VERSION: " + self.final_sel + " is Available for Update",
             )
             self.sel_new_Frame.grid(row=0, column=0)
             # calls the get email function
@@ -186,51 +198,55 @@ class FindVersion:
 
     # Inputs data from user input to database
     def submit(self):
-        # Creates the connection from the database.py
-        conn = sqlite3.connect("email.db")
-        c = conn.cursor()
 
-        # Insert into the database table
-        if c.execute(
-            "INSERT INTO email VALUES (:email_address)",
-            {"email_address": self.user_email.get()},
-        ):
-            # deletes email if longer than 6 months
-            # self.delete_email_sixmonths()
-            # global input_date
-            # input_date = date.today()
-            inserted_email = Label(root, text="Email has been submitted")
-            inserted_email.grid(row=2, column=1)
-
+        if self.user_email.get() == "":
+            error = Label(root, text="Empty Field / Invalid email")
+            error.grid(row=1, column=1)
         else:
-            error = Label(root, text="Error entering email")
-            error.grid(row=2, column=1)
+            # Creates the connection from the database.py
+            conn = sqlite3.connect("email.db")
+            c = conn.cursor()
+            # Insert into the database table
+            c.execute(
+                "INSERT INTO email VALUES (:email_address)",
+                {"email_address": self.user_email.get()},
+            )
+            # deletes email if longer than 6 months
 
-        conn.commit()
-        conn.close()
-        self.refresh()
+            inserted_email = Label(root, text="Email has been submitted")
+            inserted_email.grid(row=1, column=1)
+
+            self.date_today = date.today()
+            print("Today's date : " + str(self.date_today))
+            self.__delete_email_sixmonths()
+
+            self.refresh()
+            conn.commit()
+            conn.close()
 
         # Clear The Text Boxes
         self.user_email.delete(0, END)
 
     # removes email when email is typed in the field of (UNSUBSCRIBE)
     def removeEmail(self):
-        conn = sqlite3.connect("email.db")
-        c = conn.cursor()
-        if c.execute(
-            "DELETE from email WHERE email_address=?", (self.email_delete.get(),)
-        ):
+        if self.email_delete.get() == "":
+            error_label = Label(root, text="Invalid Syntax / No record available")
+            error_label.grid(row=5, column=1)
+
+        else:
+            conn = sqlite3.connect("email.db")
+            c = conn.cursor()
+            c.execute(
+                "DELETE from email WHERE email_address=?", (self.email_delete.get(),)
+            )
             deleted_email = Label(
                 root, text="You have been Unsubscribed from the mailing list"
             )
-            deleted_email.grid(row=5, column=0)
-        else:
-            error_label = Label(root, text="There is no such record")
-            error_label.grid(row=5, column=0)
+            deleted_email.grid(row=5, column=1)
+            conn.commit()
+            conn.close()
 
         self.email_delete.delete(0, END)
-        conn.commit()
-        conn.close()
 
     # checks for record in the db
     def checkRecordDb(self):
@@ -290,17 +306,19 @@ class FindVersion:
         server.quit()
 
     # funtion to delete email after 6 months
-    def delete_email_sixmonths(self):
-        date_exceed = input_date + datetime.timedelta(6 * 365 / 12)
+    def __delete_email_sixmonths(self):
+        date_exceed = self.date_today + datetime.timedelta(6 * 365 / 12)
         print(date_exceed)
 
         if date.today() >= date_exceed:
+            conn = sqlite3.connect("email.db")
+            c = conn.cursor()
+
             c.execute("DELETE * from email")
+            conn.commit()
+            conn.close()
         else:
             print("Email still Valid")
-
-        conn.commit()
-        conn.close()
 
 
 root = Tk()
