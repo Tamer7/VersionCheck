@@ -4,3 +4,4 @@ lib*
 bin*
 emailPass.py
 emailPass.cpython-37.pyc
+ __pycache__/Validator.cpython-37.pyc
