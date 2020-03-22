@@ -12,6 +12,7 @@ from emailPass import Safe
 from datetime import date
 import datetime
 from Validator import *
+from tkinter import messagebox
 
 
 class FindVersion:
@@ -19,6 +20,21 @@ class FindVersion:
         master.title("AppToDate")
         # frame = Frame(master)
         # frame.grid(row=5, column=5)
+
+        master.geometry("1080x300")
+
+        menu = Menu(master)
+        master.config(menu=menu)
+
+        file = Menu(menu)
+        file.add_command(label="Reset Data", command=self.reset_email_data)
+        file.add_command(label="Exit", command=self.exit_application)
+        menu.add_cascade(label="File", menu=file)
+
+        # help menu in the Menu section
+        help = Menu(menu)
+        help.add_command(label="Feedback", command=self.feedback)
+        menu.add_cascade(label="Help", menu=help)
 
         self.credentials = Label(
             master, text="CREDENTIAL SECTION", font="Helvetica 22 bold"
@@ -50,12 +66,14 @@ class FindVersion:
             master, text="Subscribe", command=self.submit, relief=RAISED
         )
         self.email_button.grid(row=3, column=2)
+        self.email_button.config(height=1, width=10, background="grey")
 
         # button to delete email
         self.button_delete = Button(
             master, text="UnSubscribe", command=self.removeEmail, relief=RAISED
         )
         self.button_delete.grid(row=4, column=2)
+        self.button_delete.config(height=1, width=10)
 
         # this piece of code runs selenium without opening chrome view
         self.options = webdriver.ChromeOptions()
@@ -181,8 +199,15 @@ class FindVersion:
 
             # calls the get email function
             self.emailGet()
+
             # this method sends email with a message
-            self.email(str(self.new_record), "A new Version for Python is Available")
+            # checks if email exists in the database if it does it sends an email
+            if self.checkMail() == True:
+                self.email(
+                    str(self.new_record), "A new Version for Python is Available"
+                )
+            else:
+                print("No mail")
 
         if self.chrome_new == self.final_chrome:
 
@@ -200,7 +225,13 @@ class FindVersion:
             # calls the get email function
             self.emailGet()
             # this method sends email with a message
-            self.email(str(self.new_record), "A new Version for Chrome is Available")
+            # checks if email exists in the database if it does it sends an email
+            if self.checkMail() == True:
+                self.email(
+                    str(self.new_record), "A new Version for Chrome is Available"
+                )
+            else:
+                print("No mail")
 
         if self.selenium_computer_version == self.final_sel:
 
@@ -221,7 +252,13 @@ class FindVersion:
             # calls the get email function
             self.emailGet()
             # this method sends email with a message
-            self.email(str(self.new_record), "A new Version for Selenium is Available")
+            # checks if email exists in the database if it does it sends an email
+            if self.checkMail() == True:
+                self.email(
+                    str(self.new_record), "A new Version for Selenium is Available"
+                )
+            else:
+                print("no mail")
 
         # ------------ ENDS HERE
 
@@ -430,6 +467,48 @@ class FindVersion:
         conn.close()
 
         return self.delete_exist
+
+    def feedback(self):
+        print("It works")
+
+    def reset_email_data(self):
+
+        MsgBox = messagebox.askquestion(
+            "DELETE RECORDS",
+            "Are you sure you want to delete all email data",
+            icon="warning",
+        )
+
+        if MsgBox == "yes":
+            conn = sqlite3.connect("email.db")
+            c = conn.cursor()
+
+            c.execute("DELETE FROM email")
+            conn.commit()
+            conn.close()
+
+        else:
+            print("do nothing")
+
+    def checkMail(self):
+        """
+        This function returns True if email exsists int the database and False if it doesnt,
+        It is used to validate before sending an email to the user
+        """
+        self.mail_exists = False
+        conn = sqlite3.connect("email.db")
+        c = conn.cursor()
+        c.execute("SELECT * FROM email")
+
+        if c.fetchone():
+            self.mail_exists = True
+        else:
+            self.mail_exists = False
+
+        return self.mail_exists
+
+    def exit_application(self):
+        exit()
 
 
 root = Tk()
