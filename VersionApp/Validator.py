@@ -1,5 +1,10 @@
 import re
 
+"""
+This class validates the inputed string and if the function is called
+it validates for the "@" symbol in the inputed string
+"""
+
 
 class Validator:
     def __init__(self, email):

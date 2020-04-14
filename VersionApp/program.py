@@ -13,6 +13,9 @@ from datetime import date
 import datetime
 from Validator import *
 from tkinter import messagebox
+from PIL import ImageTk, Image
+import urllib
+import webbrowser
 
 
 class FindVersion:
@@ -22,11 +25,14 @@ class FindVersion:
         # frame.grid(row=5, column=5)
 
         master.geometry("1080x300")
+        master.iconbitmap("logo.png")
 
         menu = Menu(master)
         master.config(menu=menu)
 
         file = Menu(menu)
+        file.add_command(label="Documentation", command=self.redirect_doc)
+        file.add_command(label="----------")
         file.add_command(label="Reset Data", command=self.reset_email_data)
         file.add_command(label="Exit", command=self.exit_application)
         menu.add_cascade(label="File", menu=file)
@@ -34,6 +40,7 @@ class FindVersion:
         # help menu in the Menu section
         help = Menu(menu)
         help.add_command(label="Feedback", command=self.feedback)
+        help.add_command(label="Contact Us", command=self.contact_team)
         menu.add_cascade(label="Help", menu=help)
 
         self.credentials = Label(
@@ -89,7 +96,7 @@ class FindVersion:
 
         time.sleep(3)
 
-        # This selenium automation gets the latest version of python from the web
+        # This  automation gets the latest version of python from the web
         self.element = self.driver.find_element(
             By.XPATH,
             '// *[ @ id = "content"] / div / section / div[1] / ol / li[1] / span[1] / a',
@@ -97,7 +104,7 @@ class FindVersion:
         self.python_latest_version = self.element.text
         print("Latest Python Version: " + self.python_latest_version)
 
-        # This selenium automation gets the latest version of chrome from the web
+        # This  automation gets the latest version of chrome from the web
         self.driver.get("https://chromedriver.chromium.org/downloads")
         time.sleep(3)
         self.chrome = self.driver.find_element(
@@ -317,6 +324,14 @@ class FindVersion:
         self.deleteRecord = Validator(self.email_delete.get())
         self.delete = self.deleteRecord.check_for_symbol()
 
+        MsgBox = messagebox.askquestion(
+            "DELETE EMAIL",
+            "Are you sure you want to delete this email"
+            + " "
+            + str(self.email_delete.get()),
+            icon="warning",
+        )
+
         if (
             self.email_delete.get() == ""
             or self.delete == False
@@ -327,7 +342,8 @@ class FindVersion:
             error_label.config(fg="red")
             error_label.after(3000, error_label.destroy)
 
-        else:
+        elif MsgBox == "yes":
+
             conn = sqlite3.connect("email.db")
             c = conn.cursor()
             c.execute(
@@ -427,7 +443,7 @@ class FindVersion:
         )
 
         # Previous line selects a row of your database only if the column that contains
-        # the email adress in said row has the same adress as the one from the entry
+        # the email adress in said row has the same address as the one from the entry
 
         if (
             c.fetchone()
@@ -469,9 +485,17 @@ class FindVersion:
         return self.delete_exist
 
     def feedback(self):
-        print("It works")
+        # replace with feeback link
+        webbrowser.open("https://google.com")
 
     def reset_email_data(self):
+
+        """
+        Displays a message box upon running of this function,
+        if the user clicks yes all the data in the database
+        would get deleted
+
+        """
 
         MsgBox = messagebox.askquestion(
             "DELETE RECORDS",
@@ -492,7 +516,7 @@ class FindVersion:
 
     def checkMail(self):
         """
-        This function returns True if email exsists int the database and False if it doesnt,
+        This function returns True if email exists int the database and False if it doesnt,
         It is used to validate before sending an email to the user
         """
         self.mail_exists = False
@@ -509,6 +533,14 @@ class FindVersion:
 
     def exit_application(self):
         exit()
+
+    def redirect_doc(self):
+        # link to documentation page on github
+        print("Redirecting")
+
+    def contact_team(self):
+        # link to page for contacting team
+        pass
 
 
 root = Tk()
