@@ -34,7 +34,7 @@ python program.py
 
 - To recieve updates via email, input your email in the subscribe section and click on subscribe as shown
 
-![Homepage](Images/emailSub.png)
+![](Images/emailsubscribe.png)
 
 
 
