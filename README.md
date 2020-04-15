@@ -41,16 +41,21 @@ python program.py
 
 
 
+
 - To stop recieving emails, navigate to the <b>unsubscribe</b> field and input your email and click on <b>unsubscribe</b>
 ![](Images/unsubscribe.png)
 
 
 
+
 - You would be prompted to confirm to delete, click <b>Yes</b> to delete the email
-![](Images/unsubscribe.png)
+![](Images/popup.png)
 
 
-- If you mispell your email while unsubscribing you would recieve an error as such, just retype your email carefully and it should unsubscribe.
+
+
+- If you mispell your email while unsubscribing you would recieve an error as such below, just retype your email carefully and it should unsubscribe.
+![](Images/unsubscribeerror.png)
 
 
 
