@@ -31,7 +31,7 @@ class FindVersion:
         master.config(menu=menu)
 
         file = Menu(menu)
-        file.add_command(label="Documentation", command=self.redirect_doc)
+        file.add_command(label="Guide", command=self.redirect_doc)
         file.add_command(label="----------")
         file.add_command(label="Reset Data", command=self.reset_email_data)
         file.add_command(label="Exit", command=self.exit_application)
@@ -70,14 +70,14 @@ class FindVersion:
         # button to get email
 
         self.email_button = Button(
-            master, text="Subscribe", command=self.submit, relief=RAISED
+            master, text="Subscribe", command=self.subscribe, relief=RAISED
         )
         self.email_button.grid(row=3, column=2)
         self.email_button.config(height=1, width=10, background="grey")
 
         # button to delete email
         self.button_delete = Button(
-            master, text="UnSubscribe", command=self.removeEmail, relief=RAISED
+            master, text="UnSubscribe", command=self.unsubscribe, relief=RAISED
         )
         self.button_delete.grid(row=4, column=2)
         self.button_delete.config(height=1, width=10)
@@ -88,6 +88,7 @@ class FindVersion:
         self.options.add_argument("window-size=1920x1080")
         self.options.add_argument("disable-gpu")
 
+        # REPLACE WITH YOUR WEB PATH
         # this runs google chrome webdriver, REPLACE WITH YOUR OWN WEB DRIVER PATH
         self.driver = webdriver.Chrome(
             "/Users/tamerjar/Desktop/chromedriver", options=self.options
@@ -273,7 +274,7 @@ class FindVersion:
         self.displayVersions(root)
 
     # Inputs data from user input to database
-    def submit(self):
+    def subscribe(self):
 
         # Create an object from the Class validator to
         # check for the email validity
@@ -290,7 +291,7 @@ class FindVersion:
             )
             error.grid(row=1, column=1)
             error.config(fg="red")
-            error.after(3000, error.destroy)
+            error.after(15000, error.destroy)
         else:
             inserted_email = Label(root, text="Email has been submitted")
             inserted_email.grid(row=1, column=1)
@@ -319,43 +320,45 @@ class FindVersion:
         self.user_email.delete(0, END)
 
     # removes email when email is typed in the field of (UNSUBSCRIBE)
-    def removeEmail(self):
+    def unsubscribe(self):
 
         self.deleteRecord = Validator(self.email_delete.get())
         self.delete = self.deleteRecord.check_for_symbol()
 
-        MsgBox = messagebox.askquestion(
-            "DELETE EMAIL",
-            "Are you sure you want to delete this email"
-            + " "
-            + str(self.email_delete.get()),
-            icon="warning",
-        )
-
-        if (
-            self.email_delete.get() == ""
-            or self.delete == False
-            or self.check_delete_existence() == False
-        ):
-            error_label = Label(root, text="Invalid Syntax / No record available")
-            error_label.grid(row=5, column=1)
-            error_label.config(fg="red")
-            error_label.after(3000, error_label.destroy)
-
-        elif MsgBox == "yes":
-
-            conn = sqlite3.connect("email.db")
-            c = conn.cursor()
-            c.execute(
-                "DELETE from email WHERE email_address=?", (self.email_delete.get(),)
+        if self.email_delete.get() != "":
+            MsgBox = messagebox.askquestion(
+                "DELETE EMAIL",
+                "Are you sure you want to delete this email"
+                + " "
+                + str(self.email_delete.get()),
+                icon="warning",
             )
-            deleted_email = Label(
-                root, text="You have been Unsubscribed from the mailing list"
-            )
-            deleted_email.grid(row=5, column=1)
-            deleted_email.after(3000, deleted_email.destroy)
-            conn.commit()
-            conn.close()
+
+            if (
+                self.email_delete.get() == ""
+                or self.delete == False
+                or self.check_delete_existence() == False
+            ):
+                error_label = Label(root, text="Invalid Syntax / No record available")
+                error_label.grid(row=5, column=1)
+                error_label.config(fg="red")
+                error_label.after(15000, error_label.destroy)
+
+            elif MsgBox == "yes":
+
+                conn = sqlite3.connect("email.db")
+                c = conn.cursor()
+                c.execute(
+                    "DELETE from email WHERE email_address=?",
+                    (self.email_delete.get(),),
+                )
+                deleted_email = Label(
+                    root, text="You have been Unsubscribed from the mailing list"
+                )
+                deleted_email.grid(row=5, column=1)
+                deleted_email.after(3000, deleted_email.destroy)
+                conn.commit()
+                conn.close()
 
         self.email_delete.delete(0, END)
 
@@ -535,8 +538,8 @@ class FindVersion:
         exit()
 
     def redirect_doc(self):
-        # link to documentation page on github
-        print("Redirecting")
+        # link to readme page on github
+        webbrowser.open("https://github.com/Tamer7/VersionCheck/blob/master/README.md")
 
     def contact_team(self):
         # link to page for contacting team
