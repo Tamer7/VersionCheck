@@ -32,10 +32,10 @@ python program.py
 - The GUI page that shows up once the application is done loading, at the left side it displays the information in rows, the green text and message indicates that there is no new available update, while the red text and message indicate that there is a new available update.
 
 
-
 ![Homepage](Images/homepage.png)
 
 - To recieve updates via email, input your email in the subscribe section and click on <b>subscribe</b> as shown and start recieving updates on email!
+
 
 ![](Images/emailsubscribe.png)
 
@@ -43,18 +43,24 @@ python program.py
 
 
 - To stop recieving emails, navigate to the <b>unsubscribe</b> field and input your email and click on <b>unsubscribe</b>
+
+
 ![](Images/unsubscribe.png)
 
 
 
 
 - You would be prompted to confirm to delete, click <b>Yes</b> to delete the email
+
+
 ![](Images/popup.png)
 
 
 
 
 - If you mispell your email while unsubscribing you would recieve an error as such below, just retype your email carefully and it should unsubscribe.
+
+
 ![](Images/unsubscribeerror.png)
 
 
