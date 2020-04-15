@@ -28,7 +28,10 @@ self.driver = webdriver.Chrome("INSERT DRIVER PATH HERE", options=self.options)
 python program.py
 ```
 
-- The GUI page that shows up once the application is done loading 
+- The GUI page that shows up once the application is done loading, at the left side it displays the information in rows, the green text and message indicates that there is no new available update, while the red text and message indicate that there is a new available update.
+
+![Homepage](Images/homepage.png)
+
 
 
 
