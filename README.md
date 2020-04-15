@@ -10,13 +10,14 @@ Users can subscribe and recieve emails if any new updates are available, users c
 
 
 # Installation
- 1. Download and install Python3
- 2. Download the required packages by typing:
+ 1. Download and install Python3 <a href="https://www.python.org/downloads/">here</a>
+ 2. Clone the Project to your Local Machine
+ 3. Download the required packages by typing:
  ```bash
 pip install -r requirements.txt
 ```
- 3. Download Chrome Webdriver from <a href="https://chromedriver.chromium.org/downloads">here</a>
- 4. Navigate to this section of the code and replace to your Chrome Webdriver Path
+ 4. Download Chrome Webdriver from <a href="https://chromedriver.chromium.org/downloads">here</a>
+ 5. Navigate to this section of the code and replace to your Chrome Webdriver Path
 ``` python
 self.driver = webdriver.Chrome("INSERT DRIVER PATH HERE", options=self.options)
 ```
@@ -62,6 +63,33 @@ python program.py
 
 
 ![](Images/unsubscribeerror.png)
+
+
+
+
+# Built With
+
+- Python - Programming Language
+- Tkinter - GUI
+
+
+
+# TODO
+
+- Include Other Browser Support
+- Optimize Code
+- Resolve Bugs
+
+
+# Authors
+
+- Tamer Algarmakany (Team Leader)
+- Radvan Khammud
+- Ayush Arvind
+- Tushar Kapoor
+
+
+
 
 
 
