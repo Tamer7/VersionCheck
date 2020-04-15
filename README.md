@@ -42,7 +42,7 @@ python program.py
 
 
 
-- To stop recieving emails, navigate to the <b>unsubscribe</b> field and input your email and click on <b>unsubscribe</b>
+- To stop recieving emails, navigate to the <b>unsubscribe</b> field and input your email and click on <b>unsubscribe</b>.
 
 
 ![](Images/unsubscribe.png)
@@ -50,7 +50,7 @@ python program.py
 
 
 
-- You would be prompted to confirm to delete, click <b>Yes</b> to delete the email
+- You would be prompted to confirm to delete, click <b>Yes</b> to delete the email.
 
 
 ![](Images/popup.png)
