@@ -28,13 +28,23 @@ self.driver = webdriver.Chrome("INSERT DRIVER PATH HERE", options=self.options)
 python program.py
 ```
 
+
 - The GUI page that shows up once the application is done loading, at the left side it displays the information in rows, the green text and message indicates that there is no new available update, while the red text and message indicate that there is a new available update.
+
+
 
 ![Homepage](Images/homepage.png)
 
-- To recieve updates via email, input your email in the subscribe section and click on subscribe as shown
+- To recieve updates via email, input your email in the subscribe section and click on <b>subscribe</b> as shown and start recieving updates on email!
 
 ![](Images/emailsubscribe.png)
+
+
+
+- To stop recieving emails, navigate to the <b>unsubscribe</b> field and input your email and click on <b>unsubscribe</b>
+
+
+- If you mispell your email while unsubscribing you would recieve an error as such, just retype your email carefully and it should unsubscribe.
 
 
 
