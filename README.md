@@ -11,7 +11,10 @@ Users can subscribe and recieve emails if any new updates are available, users c
 
 # Installation
  1. Download and install Python3 <a href="https://www.python.org/downloads/">here</a>
- 2. Clone this repo to your local machine using https://github.com/Tamer7/VersionCheck.git
+ 2. Clone this repo to your local machine using:
+  ```bash
+ git clone https://github.com/Tamer7/VersionCheck.git
+ ```
  3. Download the required packages by typing:
  ```bash
 pip install -r requirements.txt
