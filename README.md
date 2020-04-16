@@ -10,7 +10,7 @@ Users can subscribe and recieve emails if any new updates are available, users c
 
 
 # Installation
- 1. Download and install Python3 <a href="https://www.python.org/downloads/">here</a>
+ 1. Download and install Python 3 or higher from <a href="https://www.python.org/downloads/">here</a>
  2. Clone this repo to your local machine using:
   ```bash
  git clone https://github.com/Tamer7/VersionCheck.git
@@ -24,6 +24,16 @@ pip install -r requirements.txt
 ``` python
 self.driver = webdriver.Chrome("INSERT DRIVER PATH HERE", options=self.options)
 ```
+ 6. To recieve emails using this application, locate the "email" function, and locate the following code and change them accordinly to your sending email and password
+``` python
+username = Safe.username
+password = Safe.password
+
+ # CHANGE TO (Your desired sending email address, gmail preferably)
+ 
+ username = test123@gmail.com
+ password = Test12345
+```
 
 # Usage
 
@@ -33,7 +43,7 @@ python program.py
 ```
 
 
-- The GUI page that shows up once the application is done loading, at the left side it displays the information in rows, the green text and message indicates that there is no new available update, while the red text and message indicate that there is a new available update.
+- The GUI page that shows up once the application is done loading, at the left side it displays the information in rows, the green text and message's indicates that there are no new available updates, while the red text and message's indicate that there is a new available update.
 
 
 ![Homepage](Images/homepage.png)
