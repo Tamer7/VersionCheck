@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Feedback</title>
+    <link rel="shortcut icon" type="pics/logo_transparent.png" href="pics/logo_transparent.png" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <!--------------------Nav-bar Section---------------------->
+    <section id="nav-bar">
+        <nav class="navbar navbar-expand-lg navbar-light ">
+            <a class="navbar-brand" href="index.html"><img src="pics/logo.png" alt="logo"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#footer">CONTACT</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </section>
+
+    <!---------------------banner section-------------------------->
+
+    <section id="banner">
+        <div class="container">
+            <div class="row">
+                <div id="form-main">
+                        <form class="form" id="form1" action="contactform.php" method="post">
+
+                            <p class="name">
+                                <input name="name" type="text"
+                                    class="validate[required,custom[onlyLetter],length[0,100]] feedback-input"
+                                    placeholder="Name" id="name" />
+                            </p>
+
+                            <p class="email">
+                                <input name="email" type="text" class="validate[required,custom[email]] feedback-input"
+                                    id="email" placeholder="Email" />
+                            </p>
+                            <p class="name">
+                                <input name="subject" type="text" class="validate[required,custom[email]] feedback-input"
+                                    id="comment" placeholder="Subject" />
+                            </p>
+                            <p class="text">
+                                <textarea name="message" class="validate[required,length[6,300]] feedback-input"
+                                    id="comment" placeholder="Comment"></textarea>
+                            </p>
+                            <div class="submit">
+                                <input type="submit" name="submit" value="SEND" id="button-blue" />
+                                <div class="ease"></div>
+                            </div>                           
+                        </form>
+                    </div>
+                    
+            <div class="col-md-5">
+                <img src="pics/logo_transparent.png" class="img-fluid" alt="">
+            </div>
+                </div>
+            </div>
+        </div>
+
+        <img src="pics/bottom-wave2.png" class="bottom-img">
+
+    </section>
+
+    <!---------------social media section----------------->
+
+    <secton id="social-media">
+        <div class="container text-center">
+            <p>FIND US ON SOCIAL MEDIA</p>
+            <div class="social-icons">
+                <a href="#"><img src="pics/fb.png" width="50px" alt=""></a>
+                <a href="#"><img src="pics/insta.png" width="50px" alt=""></a>
+                <a href="#"><img src="pics/tw.png" width="50px" alt=""></a>
+            </div>
+        </div>
+    </secton>
+
+    <!-----------------Footer section---------------->
+
+    <section id="footer">
+        <img src="pics/bottom-wave1.png" class="footer-img" alt="">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 footer-box">
+                    <img src="pics/logo.png" alt="">
+                    <p>hub hub and popalway..akdmaskdm klamlkad lajdlkamda laksmdkasld. Press the bell icon to get
+                        notifications</p>
+                </div>
+                <div class="col-md-4 footer-box">
+                    <p><b>CONTACT US</b></p>
+                    <P><i class="fa fa-map-marker"></i>Varna University of Managment</p>
+                    <p><i class="fa fa-phone"></i>+359 886 89 88 75</p>
+                    <p><i class="fa fa-envelope-o"></i>deportationsquadvum@gmail.com</p>
+                </div>
+            </div>
+            <hr>
+            <p class="copyright">© Copyright 2020 Deportation Squad, Inc.</p>
+        </div>
+    </section>
+
+    <!-----------------smooth scroll-------------->
+
+    <script src="smooth-scroll.js"></script>
+    <script>
+        var scroll = new SmoothScroll('a[href*="#"]');
+    </script>
+
+
+</body>
+
+</html>
