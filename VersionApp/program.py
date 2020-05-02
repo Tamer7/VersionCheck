@@ -351,7 +351,7 @@ class FindVersion:
         self.delete = self.deleteRecord.check_for_symbol()
 
         if self.email_delete.get() != "":
-            MsgBox = messagebox.askquestion(
+            message_box = messagebox.askquestion(
                 "DELETE EMAIL",
                 "Are you sure you want to delete this email"
                 + " "
@@ -369,7 +369,7 @@ class FindVersion:
                 error_label.config(fg="red")
                 error_label.after(15000, error_label.destroy)
 
-            elif MsgBox == "yes":
+            elif message_box == "yes":
 
                 conn = sqlite3.connect("email.db")
                 c = conn.cursor()
