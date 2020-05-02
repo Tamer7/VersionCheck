@@ -159,6 +159,18 @@ class FindVersion:
         except:
             logging.warning("Chrome is not installed on your system")
             print("Chrome is not installed on your system")
+            
+        # code for getting selenium current version on system
+        try:
+            self.selenium_computer_version = selenium.__version__
+            # Selenium Version on your system
+            logging.info(
+                "Your Selenium Version: " + str(self.selenium_computer_version)
+            )
+            print("Your Selenium Version " + self.selenium_computer_version)
+        except:
+            logging.WARNING("Selenium is not installed on your system")
+            print("Selenium is not installed on your system")
 
 
 
