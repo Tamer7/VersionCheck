@@ -583,7 +583,7 @@ class FindVersion:
 
     def contact_team(self):
         "Link to our Website for contact"
-        webbrowser.open("www.vum-ds-app2date.online")
+        webbrowser.open("https://hg49zozjfvzdfaltk2xita-on.drv.tw/www.vum-ds-app2date.online/")
 
 
 root = Tk()
