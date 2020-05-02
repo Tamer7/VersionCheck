@@ -531,7 +531,7 @@ class FindVersion:
 
     def feedback(self):
         # replace with feeback link
-        webbrowser.open("https://google.com")
+        webbrowser.open("https://hg49zozjfvzdfaltk2xita-on.drv.tw/www.vum-ds-app2date.online/feedback.html")
 
     def reset_email_data(self):
 
@@ -583,7 +583,7 @@ class FindVersion:
 
     def contact_team(self):
         "Link to our Website for contact"
-        pass
+        webbrowser.open("www.vum-ds-app2date.online")
 
 
 root = Tk()
