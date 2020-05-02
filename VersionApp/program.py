@@ -1,31 +1,34 @@
+"App-To-Date Application"
+
+import sys
+import logging
+import webbrowser
+import datetime
+from datetime import date
 from tkinter import font
+from email.mime.text import MIMEText
+import platform
+import time
+from tkinter import Menu, Label, Entry, Button, Tk, RAISED, Listbox, END
+import smtplib
+from Validator import Validator
+from tkinter import messagebox
 import selenium
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import platform
-import time
-from tkinter import *
 from database import *
-import smtplib
-from email.mime.text import MIMEText
 from emailPass import Safe
-from datetime import date
-import datetime
-from Validator import *
-from tkinter import messagebox
-from PIL import ImageTk, Image
-import urllib
-import webbrowser
+
+logging.basicConfig(
+    filename="test.log", level=logging.INFO, format="%(levelname)s:%(message)s"
+)
 
 
 class FindVersion:
+    "Class contains all features for the application"
+
     def __init__(self, master):
         master.title("AppToDate")
-        # frame = Frame(master)
-        # frame.grid(row=5, column=5)
-
-        master.geometry("1080x300")
-        master.iconbitmap("logo.png")
 
         menu = Menu(master)
         master.config(menu=menu)
@@ -99,10 +102,10 @@ class FindVersion:
 
         # This  automation gets the latest version of python from the web
         self.element = self.driver.find_element(
-            By.XPATH,
-            '// *[ @ id = "content"] / div / section / div[1] / ol / li[1] / span[1] / a',
+            By.XPATH, '//*[@id="content"]/div/section/div[2]/ol/li[1]/span[1]/a'
         )
         self.python_latest_version = self.element.text
+        logging.info("Latest Python Version:" + str(self.python_latest_version))
         print("Latest Python Version: " + self.python_latest_version)
 
         # This  automation gets the latest version of chrome from the web
@@ -113,6 +116,7 @@ class FindVersion:
             '//*[@id="sites-canvas-main-content"]/table/tbody/tr/td/div/div[4]/h2/span/a',
         )
         self.final_chrome = self.chrome.text
+        logging.info("Latest Chrome Version: " + str(self.final_chrome))
         print("Latest Chrome Version: " + self.final_chrome)
 
         # This Automation gets latest version of selenium from the web
@@ -122,9 +126,10 @@ class FindVersion:
             By.XPATH, "/html/body/div[3]/table/tbody/tr[3]/td[2]"
         )
         self.final_sel = self.sel.text
+        logging.info("Latest Selenium Version: " + str(self.final_sel))
         print("Latest Selenium Version: " + self.final_sel)
 
-    def versionSystem(self):
+    def version_system(self):
         """
         This functions gets the version of python, chrome and selenium
         from the users/clients device or machine.
@@ -136,8 +141,10 @@ class FindVersion:
             self.pythonVersion = platform.python_version()
             self.finalVersion = "Python " + self.pythonVersion
             # Python Version on your system
-            print("Your Version: " + self.finalVersion)
+            logging.info("Latest Python Version: " + str(self.finalVersion))
+            print("Your Python Version: " + self.finalVersion)
         except:
+            logging.warning("Python is not installed on your system")
             print("Python is not installed on your system")
 
         # code for getting chrome current version on system
@@ -145,19 +152,25 @@ class FindVersion:
             self.chrome_version = self.driver.capabilities["browserVersion"]
             self.chrome_new = "ChromeDriver " + self.chrome_version
             # Chrome Version on your system
+            logging.info("Your Chrome Version: " + str(self.chrome_new))
             print("Your Chrome Version: " + self.chrome_new)
         except:
+            logging.warning("Chrome is not installed on your system")
             print("Chrome is not installed on your system")
 
         # code for getting selenium current version on system
         try:
             self.selenium_computer_version = selenium.__version__
             # Selenium Version on your system
+            logging.info(
+                "Your Selenium Version: " + str(self.selenium_computer_version)
+            )
             print("Your Selenium Version " + self.selenium_computer_version)
         except:
+            logging.WARNING("Selenium is not installed on your system")
             print("Selenium is not installed on your system")
 
-    def displayVersions(self, master):
+    def display_version(self, master):
 
         """
         This function compares the latest versions of (python,selenium & chrome)
@@ -206,11 +219,11 @@ class FindVersion:
             )
 
             # calls the get email function
-            self.emailGet()
+            self.email_get()
 
             # this method sends email with a message
             # checks if email exists in the database if it does it sends an email
-            if self.checkMail() == True:
+            if self.check_mail() is True:
                 self.email(
                     str(self.new_record), "A new Version for Python is Available"
                 )
@@ -231,10 +244,10 @@ class FindVersion:
             )
 
             # calls the get email function
-            self.emailGet()
+            self.email_get()
             # this method sends email with a message
             # checks if email exists in the database if it does it sends an email
-            if self.checkMail() == True:
+            if self.check_mail() is True:
                 self.email(
                     str(self.new_record), "A new Version for Chrome is Available"
                 )
@@ -258,10 +271,10 @@ class FindVersion:
             )
 
             # calls the get email function
-            self.emailGet()
+            self.email_get()
             # this method sends email with a message
             # checks if email exists in the database if it does it sends an email
-            if self.checkMail() == True:
+            if self.check_mail() is True:
                 self.email(
                     str(self.new_record), "A new Version for Selenium is Available"
                 )
@@ -271,7 +284,7 @@ class FindVersion:
         # ------------ ENDS HERE
 
     def refresh(self):
-        self.displayVersions(root)
+        self.display_version(root)
 
     # Inputs data from user input to database
     def subscribe(self):
@@ -283,8 +296,8 @@ class FindVersion:
 
         if (
             self.user_email.get() == ""
-            or self.valid == False
-            or self.check_email_exsistence() == True
+            or self.valid is False
+            or self.check_email_exsistence() is True
         ):
             error = Label(
                 root, text="Empty Field / Invalid email / Email Already Exists"
@@ -309,6 +322,7 @@ class FindVersion:
             # checks for input date of emails & if greater than
             # 6 months it gets deleted
             self.date_today = date.today()
+            logging.info("Todays Date : " + str(self.date_today))
             print("Today's date : " + str(self.date_today))
             self.__delete_email_sixmonths()
 
@@ -321,6 +335,13 @@ class FindVersion:
 
     # removes email when email is typed in the field of (UNSUBSCRIBE)
     def unsubscribe(self):
+
+        """
+        This function deals with unsubscribing users from the application,
+        it reads the data from the input field and if
+        it matches the data in the database it removes the desired email.
+        :return:
+        """
 
         self.deleteRecord = Validator(self.email_delete.get())
         self.delete = self.deleteRecord.check_for_symbol()
@@ -336,8 +357,8 @@ class FindVersion:
 
             if (
                 self.email_delete.get() == ""
-                or self.delete == False
-                or self.check_delete_existence() == False
+                or self.delete is False
+                or self.check_delete_existence() is False
             ):
                 error_label = Label(root, text="Invalid Syntax / No record available")
                 error_label.grid(row=5, column=1)
@@ -363,7 +384,7 @@ class FindVersion:
         self.email_delete.delete(0, END)
 
     # checks for record in the db
-    def checkRecordDb(self):
+    def check_db_record(self):
         conn = sqlite3.connect("email.db")
         c = conn.cursor()
         c.execute("SELECT * FROM email")
@@ -377,13 +398,20 @@ class FindVersion:
         conn.commit()
         conn.close()
 
-    def emailGet(self):
+    def email_get(self):
+        """
+        This function shows all email in the database in an array,
+        to make it easier to send emails to all
+        available emails in the database
+        :return:
+        """
         # Creates the connection from the database.py
         conn = sqlite3.connect("email.db")
         c = conn.cursor()
 
         c.execute("SELECT *, oid FROM email")
         self.records = c.fetchall()
+        logging.info("This is all the emails in the database :" + str(self.records))
         print("This is all the emails in the database : " + str(self.records))
         self.get_records = ""
 
@@ -391,6 +419,7 @@ class FindVersion:
             self.get_records += str(self.i[0] + ",")
             # print(get_records)
             self.new_record = self.get_records[:-1]
+            logging.info("New record" + str(self.new_record))
             print(self.new_record)
 
         conn.commit()
@@ -398,6 +427,14 @@ class FindVersion:
 
     # this is the email functionality to send email using smtp
     def email(self, email, email_string):
+
+        """
+        This function is responsible to send emails to users
+        :param email: takes in the users email address
+        :param email_string: takes in the message
+        :return:
+        """
+
         smtp_ssl_host = "smtp.gmail.com"
         smtp_ssl_port = 465
         username = Safe.username
@@ -417,6 +454,11 @@ class FindVersion:
 
     # funtion to delete email after 6 months
     def __delete_email_sixmonths(self):
+        """
+        This function takes place automatically, after 6 months of the emails in the database
+        it deletes everything from the database to ensure the emails do not stay unused.
+        :return:
+        """
         date_exceed = self.date_today + datetime.timedelta(6 * 365 / 12)
         print(date_exceed)
 
@@ -514,10 +556,7 @@ class FindVersion:
             conn.commit()
             conn.close()
 
-        else:
-            print("do nothing")
-
-    def checkMail(self):
+    def check_mail(self):
         """
         This function returns True if email exists int the database and False if it doesnt,
         It is used to validate before sending an email to the user
@@ -535,22 +574,22 @@ class FindVersion:
         return self.mail_exists
 
     def exit_application(self):
-        exit()
+        " Exits Application "
+        sys.exit()
 
     def redirect_doc(self):
-        # link to readme page on github
+        " Link to Readme on github"
         webbrowser.open("https://github.com/Tamer7/VersionCheck/blob/master/README.md")
 
     def contact_team(self):
-        # link to page for contacting team
+        "Link to our Website for contact"
         pass
 
 
 root = Tk()
 app = FindVersion(root)
-app.versionSystem()
-app.displayVersions(root)
-app.checkRecordDb()
-
+app.version_system()
+app.display_version(root)
+app.check_db_record()
 
 root.mainloop()
