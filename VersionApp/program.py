@@ -119,15 +119,8 @@ class FindVersion:
         logging.info("Latest Chrome Version: " + str(self.final_chrome))
         print("Latest Chrome Version: " + self.final_chrome)
 
-        # This Automation gets latest version of selenium from the web
-        self.driver.get("https://www.selenium.dev/downloads/")
-        time.sleep(3)
-        self.sel = self.driver.find_element(
-            By.XPATH, "/html/body/div[3]/table/tbody/tr[3]/td[2]"
-        )
-        self.final_sel = self.sel.text
-        logging.info("Latest Selenium Version: " + str(self.final_sel))
-        print("Latest Selenium Version: " + self.final_sel)
+       
+
 
     def version_system(self):
         """
