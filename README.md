@@ -15,16 +15,22 @@ Users can subscribe and recieve emails if any new updates are available, users c
   ```bash
  git clone https://github.com/Tamer7/VersionCheck.git
  ```
- 3. Download the required packages by typing:
+ 3. Navigate and open the "VersionApp" Folder in your Editor:
+```bash
+Folder "VersionApp"
+Note: Ignore the Screenshot and Website Folder
+```
+ 
+ 4. Download the required packages by typing:
  ```bash
 pip install -r requirements.txt
 ```
- 4. Download Chrome Webdriver from <a href="https://chromedriver.chromium.org/downloads">here</a>
- 5. Navigate to this section of the code and replace to your Chrome Webdriver Path
+ 5. Download Chrome Webdriver from <a href="https://chromedriver.chromium.org/downloads">here</a>
+ 6. Navigate to this section of the code and replace to your Chrome Webdriver Path
 ``` python
 self.driver = webdriver.Chrome("INSERT DRIVER PATH HERE", options=self.options)
 ```
- 6. To recieve emails using this application, locate the "email" function, and locate the following code and change them accordinly to your sending email and password
+ 7. To recieve emails using this application, locate the "email" function, and locate the following code and change them accordinly to your sending email and password
 ``` python
 username = Safe.username
 password = Safe.password
