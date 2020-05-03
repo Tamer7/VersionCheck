@@ -93,7 +93,7 @@ class FindVersion:
         # REPLACE WITH YOUR WEB PATH
         # this runs google chrome webdriver, REPLACE WITH YOUR OWN WEB DRIVER PATH
         self.driver = webdriver.Chrome(
-            "/Users/tamerjar/Desktop/chromedriver", options=self.options
+            r"C:\Users\Tamer\OneDrive\Desktop\chromedriver.exe", options=self.options
         )
         self.driver.get("https://www.python.org/downloads/")
 
