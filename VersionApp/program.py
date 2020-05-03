@@ -106,7 +106,15 @@ class FindVersion:
         self.python_latest_version = self.element.text
         logging.info("Latest Python Version:" + str(self.python_latest_version))
 
-
+        # This  code gets the latest version of chrome from the web
+        self.driver.get("https://chromedriver.chromium.org/downloads")
+        time.sleep(3)
+        self.chrome = self.driver.find_element(
+            By.XPATH,
+            '//*[@id="sites-canvas-main-content"]/table/tbody/tr/td/div/div[4]/h2/span/a',
+        )
+        self.final_chrome = self.chrome.text
+        logging.info("Latest Chrome Version: " + str(self.final_chrome))
 
         # This code gets the latest version of selenium from the web
 
@@ -134,7 +142,14 @@ class FindVersion:
         except:
             logging.warning("Python is not installed on your system")
 
-
+        # code for getting chrome current version on system
+        try:
+            self.chrome_version = self.driver.capabilities["browserVersion"]
+            self.chrome_new = "ChromeDriver " + self.chrome_version
+            # Chrome Version on your system
+            logging.info("Your Chrome Version: " + str(self.chrome_new))
+        except:
+            logging.warning("Chrome is not installed on your system")
 
         # code for getting selenium current version on system
         try:
