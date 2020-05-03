@@ -9,15 +9,14 @@ from tkinter import font
 from email.mime.text import MIMEText
 import platform
 import time
-from tkinter import Menu, Label, Entry, Button, Tk, RAISED, Listbox, END
+from tkinter import Menu, Label, Entry, Button, Tk, RAISED, Listbox, END, messagebox
 import smtplib
-from Validator import Validator
-from tkinter import messagebox
 import selenium
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from database import *
 from emailPass import Safe
+from Validator import Validator
 
 logging.basicConfig(
     filename="test.log", level=logging.INFO, format="%(levelname)s:%(message)s"
@@ -106,7 +105,6 @@ class FindVersion:
         )
         self.python_latest_version = self.element.text
         logging.info("Latest Python Version:" + str(self.python_latest_version))
-        print("Latest Python Version: " + self.python_latest_version)
 
         # This  automation gets the latest version of chrome from the web
         self.driver.get("https://chromedriver.chromium.org/downloads")
@@ -117,10 +115,9 @@ class FindVersion:
         )
         self.final_chrome = self.chrome.text
         logging.info("Latest Chrome Version: " + str(self.final_chrome))
-        print("Latest Chrome Version: " + self.final_chrome)
 
         # This code gets the latest version of selenium from the web
-        
+
         self.driver.get("https://www.selenium.dev/downloads/")
         time.sleep(3)
         self.sel = self.driver.find_element(
@@ -128,8 +125,6 @@ class FindVersion:
         )
         self.final_sel = self.sel.text
         logging.info("Latest Selenium Version: " + str(self.final_sel))
-        print("Latest Selenium Version: " + self.final_sel)
-
 
     def version_system(self):
         """
@@ -140,14 +135,12 @@ class FindVersion:
 
         """
         try:
-            self.pythonVersion = platform.python_version()
-            self.finalVersion = "Python " + self.pythonVersion
+            self.python_Version = platform.python_version()
+            self.final_Version = "Python " + self.python_Version
             # Python Version on your system
-            logging.info("Latest Python Version: " + str(self.finalVersion))
-            print("Your Python Version: " + self.finalVersion)
+            logging.info("Latest Python Version: " + str(self.final_Version))
         except:
             logging.warning("Python is not installed on your system")
-            print("Python is not installed on your system")
 
         # code for getting chrome current version on system
         try:
@@ -155,11 +148,9 @@ class FindVersion:
             self.chrome_new = "ChromeDriver " + self.chrome_version
             # Chrome Version on your system
             logging.info("Your Chrome Version: " + str(self.chrome_new))
-            print("Your Chrome Version: " + self.chrome_new)
         except:
             logging.warning("Chrome is not installed on your system")
-            print("Chrome is not installed on your system")
-            
+
         # code for getting selenium current version on system
         try:
             self.selenium_computer_version = selenium.__version__
@@ -167,12 +158,8 @@ class FindVersion:
             logging.info(
                 "Your Selenium Version: " + str(self.selenium_computer_version)
             )
-            print("Your Selenium Version " + self.selenium_computer_version)
         except:
             logging.WARNING("Selenium is not installed on your system")
-            print("Selenium is not installed on your system")
-
-
 
     def display_version(self, master):
 
@@ -207,10 +194,10 @@ class FindVersion:
         # self.list3.config(font=self.bolded3)
 
         # ------- THIS CODE DISPLAYS VERSION UPON RUNNING THE APP
-        if self.python_latest_version == self.finalVersion:
+        if self.python_latest_version == self.final_Version:
             self.list.config(fg="green")
             self.list.insert(
-                1, "You have the Latest Python Version : " + self.finalVersion
+                1, "You have the Latest Python Version : " + self.final_Version
             )
 
         else:
@@ -232,7 +219,7 @@ class FindVersion:
                     str(self.new_record), "A new Version for Python is Available"
                 )
             else:
-                print("No mail")
+                logging.info("No mail")
 
         if self.chrome_new == self.final_chrome:
 
@@ -256,7 +243,7 @@ class FindVersion:
                     str(self.new_record), "A new Version for Chrome is Available"
                 )
             else:
-                print("No mail")
+                logging.info("No mail")
 
         if self.selenium_computer_version == self.final_sel:
 
@@ -283,7 +270,7 @@ class FindVersion:
                     str(self.new_record), "A new Version for Selenium is Available"
                 )
             else:
-                print("no mail")
+                logging.info("No mail")
 
         # ------------ ENDS HERE
 
@@ -292,7 +279,6 @@ class FindVersion:
 
     # Inputs data from user input to database
     def subscribe(self):
-
         # Create an object from the Class validator to
         # check for the email validity
         self.validator = Validator(self.user_email.get())
@@ -327,7 +313,6 @@ class FindVersion:
             # 6 months it gets deleted
             self.date_today = date.today()
             logging.info("Todays Date : " + str(self.date_today))
-            print("Today's date : " + str(self.date_today))
             self.__delete_email_sixmonths()
 
             conn.commit()
@@ -387,21 +372,6 @@ class FindVersion:
 
         self.email_delete.delete(0, END)
 
-    # checks for record in the db
-    def check_db_record(self):
-        conn = sqlite3.connect("email.db")
-        c = conn.cursor()
-        c.execute("SELECT * FROM email")
-        self.rows = c.fetchall()
-        self.email_check = ""
-
-        for self.row in self.rows:
-            self.email_check += str(self.row[0] + ",")
-            print(self.email_check)
-
-        conn.commit()
-        conn.close()
-
     def email_get(self):
         """
         This function shows all email in the database in an array,
@@ -416,7 +386,6 @@ class FindVersion:
         c.execute("SELECT *, oid FROM email")
         self.records = c.fetchall()
         logging.info("This is all the emails in the database :" + str(self.records))
-        print("This is all the emails in the database : " + str(self.records))
         self.get_records = ""
 
         for self.i in self.records:
@@ -424,7 +393,6 @@ class FindVersion:
             # print(get_records)
             self.new_record = self.get_records[:-1]
             logging.info("New record" + str(self.new_record))
-            print(self.new_record)
 
         conn.commit()
         conn.close()
@@ -438,6 +406,9 @@ class FindVersion:
         :param email_string: takes in the message
         :return:
         """
+
+        if not (isinstance(email, str) or isinstance(email_string, str)):
+            raise TypeError
 
         smtp_ssl_host = "smtp.gmail.com"
         smtp_ssl_port = 465
@@ -464,7 +435,7 @@ class FindVersion:
         :return:
         """
         date_exceed = self.date_today + datetime.timedelta(6 * 365 / 12)
-        print(date_exceed)
+        logging.info(date_exceed)
 
         if date.today() >= date_exceed:
             conn = sqlite3.connect("email.db")
@@ -474,7 +445,7 @@ class FindVersion:
             conn.commit()
             conn.close()
         else:
-            print("Email still Valid")
+            logging.info("Email Still Valid")
 
     def check_email_exsistence(self):
         """
@@ -535,7 +506,9 @@ class FindVersion:
 
     def feedback(self):
         # replace with feeback link
-        webbrowser.open("https://hg49zozjfvzdfaltk2xita-on.drv.tw/www.vum-ds-app2date.online/feedback.html")
+        webbrowser.open(
+            "https://hg49zozjfvzdfaltk2xita-on.drv.tw/www.vum-ds-app2date.online/feedback.html"
+        )
 
     def reset_email_data(self):
 
@@ -546,13 +519,13 @@ class FindVersion:
 
         """
 
-        MsgBox = messagebox.askquestion(
+        message_box = messagebox.askquestion(
             "DELETE RECORDS",
             "Are you sure you want to delete all email data",
             icon="warning",
         )
 
-        if MsgBox == "yes":
+        if message_box == "yes":
             conn = sqlite3.connect("email.db")
             c = conn.cursor()
 
@@ -587,13 +560,14 @@ class FindVersion:
 
     def contact_team(self):
         "Link to our Website for contact"
-        webbrowser.open("https://hg49zozjfvzdfaltk2xita-on.drv.tw/www.vum-ds-app2date.online/")
+        webbrowser.open(
+            "https://hg49zozjfvzdfaltk2xita-on.drv.tw/www.vum-ds-app2date.online/#footer"
+        )
 
 
 root = Tk()
 app = FindVersion(root)
 app.version_system()
 app.display_version(root)
-app.check_db_record()
 
 root.mainloop()
