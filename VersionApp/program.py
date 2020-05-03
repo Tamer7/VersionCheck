@@ -554,9 +554,7 @@ class FindVersion:
         " Exits Application "
         sys.exit()
 
-    def redirect_doc(self):
-        " Link to Readme on github"
-        webbrowser.open("https://github.com/Tamer7/VersionCheck/blob/master/README.md")
+
 
     def contact_team(self):
         "Link to our Website for contact"
