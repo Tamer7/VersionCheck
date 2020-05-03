@@ -134,14 +134,7 @@ class FindVersion:
         except:
             logging.warning("Python is not installed on your system")
 
-        # code for getting chrome current version on system
-        try:
-            self.chrome_version = self.driver.capabilities["browserVersion"]
-            self.chrome_new = "ChromeDriver " + self.chrome_version
-            # Chrome Version on your system
-            logging.info("Your Chrome Version: " + str(self.chrome_new))
-        except:
-            logging.warning("Chrome is not installed on your system")
+
 
         # code for getting selenium current version on system
         try:
