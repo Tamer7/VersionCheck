@@ -567,8 +567,8 @@ class FindVersion:
 
 
 root = Tk()
-app = FindVersion(root)
-app.version_system()
-app.display_version(root)
-
-root.mainloop()
+if __name__ == "__main__":
+    app = FindVersion(root)
+    app.version_system()
+    app.display_version(root)
+    root.mainloop()
