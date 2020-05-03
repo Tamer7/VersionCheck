@@ -1,4 +1,4 @@
-# AppToDate
+# App2Date
 
 GUI application that notifies subscribed users for any latest updates of the following technology stack:
 - Python Version
